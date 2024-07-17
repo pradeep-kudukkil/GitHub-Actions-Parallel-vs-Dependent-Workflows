@@ -1,0 +1,27 @@
+name: Dependent Workflow Example
+
+on: [workflow_dispatch]
+
+jobs:
+  list-files-ubuntu:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: List files on Ubuntu
+      run: ls -al
+
+  list-files-macos:
+    runs-on: macos-latest
+    needs: list-files-ubuntu
+    steps:
+    - uses: actions/checkout@v2
+    - name: List files on macOS
+      run: ls -al
+
+  list-files-windows:
+    runs-on: windows-latest
+    needs: list-files-macos
+    steps:
+    - uses: actions/checkout@v2
+    - name: List files on Windows
+      run: Get-ChildItem -Path . -Recurse
